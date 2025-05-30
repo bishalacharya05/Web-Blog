@@ -1,0 +1,73 @@
+﻿@model List<Blog.web.Models.Domain.BlogPost>
+
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+	
+	<div class="container col-xxl-8 px-4 py-5">
+		<div class="row align-items-center g-5 py-5">
+			<div class="col-12 col-lg-6">
+				<h1 class="display-5 fw-bold lh-1 mb-3">
+					Blogology-The Blogging Collective
+				</h1>
+				<p class="lead">
+					Welcome to Blogology - The Blogging Collective!
+					This your ultimate guide for the best tech stack related topics like HTML,CSS,Javascript,ASP.NET,Cloud Computing,API etc.
+					Want to read the latest blog about the tech related topic? Join Blogology app and stay updated
+				</p>
+			</div>
+
+			<div class="col-12 col-lg-6">
+				<img src="https://cdn.pixabay.com/photo/2015/01/09/02/45/laptop-593673_1280.jpg"
+					 alt="Blogology-The Blogging Collective!"
+					 class="d-block mx-lg-auto img-fluid" width="300" />
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container">
+		<div class=" row justify-content-center">
+			<div class="col-6">
+				@if (Model != null && Model.Any())
+				{
+					foreach (var blogPost in Model)
+					{
+						<div class="mb-5 b9-light box-shadow">
+							<img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading"
+								 class="mb-z d-block img-fluid" />
+							<h2 class="mb-2">@blogPost.Heading</h2>
+
+							<p class="mb-2">
+							@foreach (var tag in blogPost.Tags)
+							{
+								<span class="badge bg-secondary me-1">@tag.Name</span>
+							}
+							</p>
+							<p class="mb-2">
+								Author: @blogPost.Author
+								<br />
+								Published Date: @blogPost.PublishDate.ToShortDateString()
+							</p>
+							<p class="mb-2 lead">
+								<b>Summary:</b><br />
+								@blogPost.ShortDecription
+							</p>
+							<a class="btn btn-dark" 
+							asp-area=""
+							asp-controller="Blogs"
+							asp-action="Index"
+							asp-route-urlHandle="@blogPost.UrlHandle"
+							
+							>Read More</a>
+
+						</div>
+					}
+				}
+			</div>
+		</div>
+
+	</div>
+
