@@ -3,11 +3,13 @@ using Blog.web.Data;
 using Blog.web.Models.Domain;
 using Blog.web.Models.ViewModel;
 using Blog.web.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminTagsController : Controller
     {
         private readonly ITagRepository tagRepository;
@@ -16,11 +18,16 @@ namespace Blog.web.Controllers
         {
             this.tagRepository = tagRepository;
         }
+
+
+        
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
+
+
         [HttpPost]
         [ActionName("Add")]
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
