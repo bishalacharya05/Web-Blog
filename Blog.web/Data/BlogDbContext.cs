@@ -14,5 +14,9 @@ namespace Blog.web.Data
         //this creats the tables on the database 
         public DbSet<BlogPost> BlogPosts { get; set; }  
         public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<BlogPostLike> BlogPostLikes { get; set; }
+        public DbSet<BlogPostComment> BlogPostComments { get; set; }
+
     }
 }
