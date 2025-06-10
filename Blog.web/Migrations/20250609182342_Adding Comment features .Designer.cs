@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.web.Migrations
 {
     [DbContext(typeof(BlogDbContext))]
-    [Migration("20250604093226_Adding Comments to the blogPost")]
-    partial class AddingCommentstotheblogPost
+    [Migration("20250609182342_Adding Comment features ")]
+    partial class AddingCommentfeatures
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,10 +76,7 @@ namespace Blog.web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BlogPostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BlogostId")
+                    b.Property<Guid>("BlogPostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateAdded")
@@ -156,7 +153,9 @@ namespace Blog.web.Migrations
                 {
                     b.HasOne("Blog.web.Models.Domain.BlogPost", null)
                         .WithMany("Comments")
-                        .HasForeignKey("BlogPostId");
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Blog.web.Models.Domain.BlogPostLike", b =>

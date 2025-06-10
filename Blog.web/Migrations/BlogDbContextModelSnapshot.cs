@@ -73,10 +73,7 @@ namespace Blog.web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BlogPostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BlogostId")
+                    b.Property<Guid>("BlogPostId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateAdded")
@@ -153,7 +150,9 @@ namespace Blog.web.Migrations
                 {
                     b.HasOne("Blog.web.Models.Domain.BlogPost", null)
                         .WithMany("Comments")
-                        .HasForeignKey("BlogPostId");
+                        .HasForeignKey("BlogPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Blog.web.Models.Domain.BlogPostLike", b =>

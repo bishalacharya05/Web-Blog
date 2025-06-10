@@ -51,6 +51,24 @@ namespace Blog.web.Controllers
                     }
                 }
 
+                //Get comments for blog
+                var blogCommentsDomainModel=await blogPostCommentRepository.GetCommentsByBlogIdAsync(blogPost.Id);
+
+                var blogCommentsForView = new List<BlogComment>();
+
+                foreach (var blogcomment in blogCommentsDomainModel)
+                {
+                    blogCommentsForView.Add(new BlogComment
+
+                    {
+                        Description = blogcomment.Description,
+                        DateAdded = blogcomment.DateAdded,
+                        Username=(await userManager.FindByIdAsync(blogcomment.UserId.ToString())).UserName 
+                        
+
+                    });
+                }
+
 
                   blogDetailsViewModel = new BlogDetailsViewModel
                 {
@@ -63,9 +81,11 @@ namespace Blog.web.Controllers
                     PublishDate = blogPost.PublishDate,
                     UrlHandle = blogPost.UrlHandle,
                     Visible = blogPost.Visible,
-                    Tags = blogPost.Tags,
+                    Tags = blogPost.Tags.ToList(),
                     TotalLikes = totallikes,
                     Liked = liked,
+                    Comments=blogCommentsForView
+                    
                 };
             }
 
@@ -80,17 +100,17 @@ namespace Blog.web.Controllers
             {
                 var domainModel = new BlogPostComment
                 {
-                    BlogostId = blogDetailsViewModel.Id,
+                    BlogPostId = blogDetailsViewModel.Id,
                     Description = blogDetailsViewModel.CommentDescription,
                     UserId = Guid.Parse(userManager.GetUserId(User)),
                     DateAdded=DateTime.Now
 
                 };
                 await blogPostCommentRepository.AddAsync(domainModel);
-                return RedirectToAction("Index", "Blogs" , new { urlHandel=blogDetailsViewModel.UrlHandle});
+                return RedirectToAction("Index", "Blogs" , new { urlHandle=blogDetailsViewModel.UrlHandle});
             }
-
-            return View();
+            return Forbid();
+            
         }
     }
 
