@@ -24,51 +24,68 @@ namespace Blog.web.Controllers
 
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            var identityUser = new IdentityUser
+            if(ModelState.IsValid)
             {
-                UserName = registerViewModel.Username,
-                Email = registerViewModel.Email,
-
-            };
-
-            var identityResult =await userManager.CreateAsync(identityUser ,registerViewModel.Password);
-
-            if (identityResult.Succeeded)
-            {
-                //assign this user the User role
-
-                var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
-                if (roleIdentityResult.Succeeded)
-
+                var identityUser = new IdentityUser
                 {
-                    //show success notification
-                }
+                    UserName = registerViewModel.Username,
+                    Email = registerViewModel.Email,
 
+                };
+
+                var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
+
+                if (identityResult.Succeeded)
+                {
+                    //assign this user the User role
+
+                    var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
+                    if (roleIdentityResult.Succeeded)
+
+                    {
+                        //show success notification
+                    }
+
+                }
             }
+           
             //show success notification
             return RedirectToAction("Register");
 
         }
          
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl)
         {
-            return View();
+            var model = new LoginViewModel
+            {
+                ReturnUrl = ReturnUrl,
+            };
+
+            return View(model);
         }
 
         [HttpPost]
          public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-           var signReasult= await signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password,false,false);
-
-            if (signReasult.Succeeded)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
+                var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
 
+                if (signInResult!=null && signInResult.Succeeded)
+                {
+                    if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+                    {
+                        return Redirect(loginViewModel.ReturnUrl);
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                //Else return Back to Login page
+                else
+                    return Ok("Envalid Password or Username");
             }
-            //If return Back to Login page
-            else
-            return Ok("Envalid Password or Username");
+            return View();
+           
         }
 
         [HttpGet]

@@ -39,6 +39,7 @@
 									<li><a class="dropdown-item" asp-area="" asp-controller="AdminTags" asp-action="List">Show All Tags</a></li>
 									<li><a class="dropdown-item" asp-area="" asp-controller="AdminBlogPosts" asp-action="Add">Add Blog Post</a></li>
 									<li><a class="dropdown-item" asp-area="" asp-controller="AdminBlogPosts" asp-action="List">Show all blog post</a></li>
+									<li><a class="dropdown-item" asp-area="" asp-controller="AdminUsers" asp-action="List">Show all Users</a></li>
 								</ul>
 							</li>
 						}
@@ -59,6 +60,8 @@
 							asp-action="Logout">
 							Logout
 							</a>
+							<a class=" btn me-3 bg-primary text-dark" asp-area="" asp-controller="AdminBlogPosts" 
+							   asp-action="Add">Create Your Blog</a>
 						}
 
 						else

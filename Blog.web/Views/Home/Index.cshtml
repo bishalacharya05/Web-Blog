@@ -36,9 +36,11 @@
 					foreach (var blogPost in Model)
 					{
 						<div class="mb-5 b9-light box-shadow">
+						<h2 class="mb-2">@blogPost.Heading</h2>
+
 							<img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading"
-								 class="mb-z d-block img-fluid" />
-							<h2 class="mb-2">@blogPost.Heading</h2>
+								 class="mb-z d-block img-fluid rounded" />
+							
 
 							<p class="mb-2">
 							@foreach (var tag in blogPost.Tags)

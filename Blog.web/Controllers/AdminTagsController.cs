@@ -32,6 +32,10 @@ namespace Blog.web.Controllers
         [ActionName("Add")]
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
             //this is done to Map the data that is filled in the View Model(AddTagRequest) to the actual model(Tag) in Domain folder...
             //Here we create the variable for the actual model class Tag of the Domain folder
             var tag = new Tag

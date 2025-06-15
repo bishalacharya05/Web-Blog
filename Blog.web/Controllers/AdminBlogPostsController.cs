@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Blog.web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+  
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository tagRepository;
@@ -19,6 +19,7 @@ namespace Blog.web.Controllers
             this.blogPostRepository = blogPostRepository;
         }
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Add()
         {
             //Getting the tags from the repository
@@ -34,7 +35,8 @@ namespace Blog.web.Controllers
         }
 
         [HttpPost]
-         
+        [Authorize(Roles = "User")]
+
         public async Task<IActionResult> Add(AddBlogPostsRequest addBlogPostsRequest)
         {
 
@@ -70,9 +72,10 @@ namespace Blog.web.Controllers
             blogPost.Tags = selectedTags;
             
             await blogPostRepository.AddAsync(blogPost);
-            return RedirectToAction("List");
+            return RedirectToAction("Index","Home"); 
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> List()
         { 
             //calling the repository
@@ -80,7 +83,10 @@ namespace Blog.web.Controllers
             return View(blogPosts);
         }
 
+
+
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(Guid id)
         {
             //this reterive the blogPost from the Repository
@@ -116,7 +122,9 @@ namespace Blog.web.Controllers
 
             return View(null);
         }
+
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(EditBlogPostRequest editBlogPostRequest)
         {
             //Now we map view model to again domain model
@@ -169,7 +177,11 @@ namespace Blog.web.Controllers
             }
 
         }
+
+        
         [HttpPost]
+
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Delete(EditBlogPostRequest editBlogPostRequest)
         {
             //Interacting with Repository to delete blog post and tags
