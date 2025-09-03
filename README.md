@@ -10,7 +10,8 @@
 - Create, edit, and delete blog posts  
 - Comment system for blog interaction  
 - Responsive and clean UI design  
-- Organized blog management  
+- Organized blog management
+- Role based Authentication
 
 
 ##  Tech Stack
